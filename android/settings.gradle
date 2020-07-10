@@ -1,4 +1,4 @@
-include ':app', ':zpdk-sandboxMerchant-release', ':zpdk-release'
+include ':app', ':zpdk-sandbox'
 
 def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
 

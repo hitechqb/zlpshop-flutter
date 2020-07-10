@@ -32,6 +32,7 @@ dev_dependencies:
     sdk: flutter
   intl: ^0.16.1
   http: ^0.12.0+4
+  crypto: ^2.1.5
 
 
 # For information on the generic Dart part of this file, see the

@@ -28,7 +28,7 @@ class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
     String response = "";
 
     try {
-      final String result = await platform.invokeMethod('payOrder', zptoken);
+      final String result = await platform.invokeMethod('payOrder', {"zptoken": zptoken});
       response = "🤣 " + result + " 🤣";
     } on PlatformException catch (e) {
 
