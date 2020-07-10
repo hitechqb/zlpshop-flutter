@@ -3,7 +3,7 @@ import Flutter
 import zpdk
 
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, ZaloPaySDKDelegate {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -30,7 +30,7 @@ import zpdk
   }
     
     func payWithToken(zptoken: String?) -> String? {
-        ZaloPaySDK.sharedInstance()?.delegate = self as? ZaloPaySDKDelegate
+        ZaloPaySDK.sharedInstance()?.delegate = self as ZaloPaySDKDelegate
         ZaloPaySDK.sharedInstance()?.payOrder(zptoken)
         return "Thanh toán Thành công"
     }
@@ -43,7 +43,13 @@ import zpdk
     }
     
     func zalopayCompleteWith(_ errorCode: ZPErrorCode, transactionId: String?, zpTranstoken zptranstoken: String?) {
-        print("zptranstoken = \(zptranstoken ?? "zptranstoken is empty")")
+        print("------ errorCode ------: \(errorCode.rawValue)")
+
+        if errorCode.rawValue == 1 {
+            print("Thanh toán thành công")
+        }else{
+            print("Thanh toán thất bai, error: \(errorCode.rawValue)")
+        }
     }
 }
 
