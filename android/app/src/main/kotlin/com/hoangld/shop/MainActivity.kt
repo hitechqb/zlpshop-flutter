@@ -17,7 +17,7 @@ import vn.zalopay.sdk.ZaloPaySDK
 class MainActivity: FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ZaloPaySDK.getInstance().initWithAppId(124705);
+        ZaloPaySDK.getInstance().initWithAppId(2554); // appId merchant
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
