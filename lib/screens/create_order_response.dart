@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shop/models/create_order_response.dart';
@@ -15,8 +17,10 @@ class CreateOrderAndPayWidget extends StatefulWidget {
 }
 
 class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
-  static const platform = const MethodChannel('flutter.native/channelPayOrder');
-  String _paymentStatus = 'Chưa thanh toán';
+  static const EventChannel eventChannel = EventChannel('flutter.native/eventPayOrder');
+  static const MethodChannel platform = const MethodChannel('flutter.native/channelPayOrder');
+
+  String _paymentStatus = 'Đang xử lý';
   String _textButton = "THANH TOÁN";
   Future<void> _onTabButton;
 
@@ -25,13 +29,13 @@ class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
   }
 
   Future<void> getPayment(String zptoken) async {
-    String response = "";
-
+     String response = "";
     try {
       final String result = await platform.invokeMethod('payOrder', {"zptoken": zptoken});
-      response = "🤣 " + result + " 🤣";
-    } on PlatformException catch (e) {
+       response = "🤣 " + result + " 🤣";
+       print("payOrder Result: '$result'.");
 
+    } on PlatformException catch (e) {
       print("Failed to Invoke: '${e.message}'.");
       response = "😱 Thanh toán thất bại 😱";
     }
@@ -44,8 +48,28 @@ class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
 
   @override
   void initState() {
-    _onTabButton = getPayment(widget.response.zptranstoken);
     super.initState();
+    eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+    _onTabButton = getPayment(widget.response.zptranstoken);
+  }
+
+  void _onEvent(Object event) {
+    print("_onEvent: '$event'.");
+    setState(() {
+      if (event.hashCode == 1) {
+        _paymentStatus = "Thanh toán thành công";
+      } else {
+        _paymentStatus = "Giao dịch thất bại";
+      }
+      _textButton = "TRANG CHỦ";
+    });
+  }
+
+  void _onError(Object error) {
+    print("_onError: '$error'.");
+    setState(() {
+      _paymentStatus = "Giao dịch thất bại";
+    });
   }
 
   @override
