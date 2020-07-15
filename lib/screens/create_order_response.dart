@@ -32,12 +32,12 @@ class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
      String response = "";
     try {
       final String result = await platform.invokeMethod('payOrder', {"zptoken": zptoken});
-       response = "🤣 " + result + " 🤣";
+       response = result;
        print("payOrder Result: '$result'.");
 
     } on PlatformException catch (e) {
       print("Failed to Invoke: '${e.message}'.");
-      response = "😱 Thanh toán thất bại 😱";
+      response = "Thanh toán thất bại";
     }
 
     setState(() {

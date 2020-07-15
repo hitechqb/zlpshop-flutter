@@ -59,7 +59,7 @@ enum ErroCodeState {
  
             ZaloPaySDK.sharedInstance()?.delegate = self
             ZaloPaySDK.sharedInstance()?.payOrder(_zptoken)
-            result(_zptoken)
+            result("Processing...")
         })
              
         let eventPayOrderChannel = FlutterEventChannel(name: ChannelName.eventPayOrder,
@@ -79,13 +79,53 @@ enum ErroCodeState {
         }else{
             if errorCode.rawValue == -1{//not install
                 print("App not installed")
-                //                installProduction()
-                //                installSandbox()
+//                installProduction()
+                installSandbox()
             }
             print("Thanh toán thất bại, error: \(errorCode.rawValue)")
         }
         
         dispatchPayOrderEvent()
+    }
+    
+    func installSandbox(){
+        let alert = UIAlertController(title: "Info", message: "Please install ZaloPay", preferredStyle: UIAlertController.Style.alert)
+        let installLink = "https://sandbox.zalopay.com.vn/static/ps_res_2019/ios/enterprise/sandboxmer/install.html"
+        let controller = window.rootViewController as? FlutterViewController
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action) in
+
+        }
+        let installAction = UIAlertAction(title: "Install App", style: .default) { (action) in
+            guard let url = URL(string: installLink) else {
+                return //be safe
+            }
+            //
+
+
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+
+        alert.addAction(cancelAction)
+        alert.addAction(installAction)
+        controller?.present(alert, animated: true, completion: nil)
+    }
+    
+    func installProduction(){
+        let alert = UIAlertController(title: "Info", message: "Please install ZaloPay", preferredStyle: UIAlertController.Style.alert)
+        let controller = window.rootViewController as? FlutterViewController
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (action) in
+
+        }
+        let installAction = UIAlertAction(title: "Install App", style: .default) { (action) in
+            ZaloPaySDK.sharedInstance()?.navigateToStore()
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(installAction)
+        controller?.present(alert, animated: true, completion: nil)
     }
     
     // func implement with FlutterStreamHandler
