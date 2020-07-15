@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/screens/home.dart';
-import 'package:shop/utils/config.dart';
-import 'package:shop/utils/theme_data.dart';
+
 
 class Dashboard extends StatefulWidget {
   final String title;

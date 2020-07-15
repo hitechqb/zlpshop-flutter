@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shop/models/create_order_response.dart';
-import 'package:shop/utils/images_network.dart';
 import 'package:shop/utils/theme_data.dart';
-import 'package:shop/utils/util.dart';
 
 class CreateOrderAndPayWidget extends StatefulWidget {
   final CreateOrderResponse response;
