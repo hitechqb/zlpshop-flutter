@@ -49,7 +49,9 @@ class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
   @override
   void initState() {
     super.initState();
-    eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+    if (Platform.isIOS) {
+      eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+    }
     _onTabButton = getPayment(widget.response.zptranstoken);
   }
 
