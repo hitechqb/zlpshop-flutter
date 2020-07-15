@@ -1,7 +1,9 @@
 package com.hoangld.shop
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +17,7 @@ import vn.zalopay.sdk.ZaloPayErrorCode
 import vn.zalopay.sdk.ZaloPaySDK
 
 class MainActivity: FlutterActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ZaloPaySDK.getInstance().initWithAppId(2554); // appId merchant
@@ -44,7 +47,17 @@ class MainActivity: FlutterActivity() {
                             Log.d(tagError, String.format("[zaloPayErrorCode]: %s, [paymentErrorCode]: %s, [zpTransToken]: %s", zaloPayErrorCode.toString(), paymentErrorCode.toString(), zpTransToken))
                             if (zaloPayErrorCode == ZaloPayErrorCode.ZALO_PAY_NOT_INSTALLED) {
                                 // handle NOT INSTALL
-                                 result.success("Thanh Toán Thất Bại")
+                                val handler = Handler(Looper.getMainLooper())
+                                handler.postDelayed({
+                                    AlertDialog.Builder(this@MainActivity)
+                                            .setTitle("Error Payment")
+                                            .setMessage("ZaloPay App not install on this Device.")
+                                            .setPositiveButton("Open Market") { dialog, which ->
+                                                ZaloPaySDK.getInstance().navigateToStore(this@MainActivity)
+                                            }
+                                            .setNegativeButton("Back", null).show()
+                                }, 500)
+                             result.success("Processing...")
                             } else {
                                 result.success("Thanh Toán Thất Bại")
                             }
