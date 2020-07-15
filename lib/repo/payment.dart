@@ -9,9 +9,9 @@ import 'package:shop/utils/util.dart' as utils;
 import 'package:sprintf/sprintf.dart';
 
 class ZaloPayConfig {
-  static const String appId = "124705";
-  static const String key1 = "UkRVyT0Mb4qBCZOZRRATz1dvEE2VDd0Y";
-  static const String key2 = "7B8SfUKWyN1h2Y6qEer0UPnt5oaEgEHm";
+  static const String appId = "2554";
+  static const String key1 = "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn";
+  static const String key2 = "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf";
 
   static const String appUser = "zamo app";
   static int transIdDefault = 1;

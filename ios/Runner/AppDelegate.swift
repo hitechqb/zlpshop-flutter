@@ -41,7 +41,7 @@ enum ErroCodeState {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         GeneratedPluginRegistrant.register(with: self)
-        ZaloPaySDK.sharedInstance()?.initWithAppId(124705)
+        ZaloPaySDK.sharedInstance()?.initWithAppId(2554)
      
         // handle channel in native iOS
         let controller = window.rootViewController as? FlutterViewController
