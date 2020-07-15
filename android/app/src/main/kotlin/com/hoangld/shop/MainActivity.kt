@@ -50,14 +50,17 @@ class MainActivity: FlutterActivity() {
                                 val handler = Handler(Looper.getMainLooper())
                                 handler.postDelayed({
                                     AlertDialog.Builder(this@MainActivity)
-                                            .setTitle("Error Payment")
-                                            .setMessage("ZaloPay App not install on this Device.")
-                                            .setPositiveButton("Open Market") { dialog, which ->
+                                            .setTitle("Error")
+                                            .setMessage("Không tìm thấy app ZaloPay")
+                                            .setPositiveButton("Install") { dialog, which ->
                                                 ZaloPaySDK.getInstance().navigateToStore(this@MainActivity)
+                                                result.success("Đang xử lý")
                                             }
-                                            .setNegativeButton("Back", null).show()
+                                            .setNegativeButton("Back") { dialog, which ->
+                                                result.success("Chưa cài đặt ZaloPay")
+                                            }
+                                            .show()
                                 }, 500)
-                             result.success("Processing...")
                             } else {
                                 result.success("Thanh Toán Thất Bại")
                             }
