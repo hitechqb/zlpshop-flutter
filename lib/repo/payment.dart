@@ -1,10 +1,8 @@
-import 'package:intl/intl.dart';
 import 'package:shop/models/create_order_response.dart';
 import 'package:shop/models/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:shop/utils/endpoints.dart';
 
 import 'package:shop/utils/util.dart' as utils;
@@ -29,25 +27,25 @@ Future<CreateOrderResponse> createOrder({Product product}) async {
   header["Content-Type"] = "application/x-www-form-urlencoded";
 
   var body = new Map<String, String>();
-  body["appid"] = ZaloPayConfig.appId;
-  body["appuser"] = ZaloPayConfig.appUser;
-  body["apptime"] = DateTime.now().millisecondsSinceEpoch.toString();
+  body["app_id"] = ZaloPayConfig.appId;
+  body["app_user"] = ZaloPayConfig.appUser;
+  body["app_time"] = DateTime.now().millisecondsSinceEpoch.toString();
   body["amount"] = product.price.toStringAsFixed(0);
-  body["apptransid"] = utils.getAppTransId();
-  body["embeddata"] = utils.getEmbedData();
+  body["app_trans_id"] = utils.getAppTransId();
+  body["embed_data"] = utils.getEmbedData();
   body["item"] = utils.getItems(
       id: product.id,
       name: product.name,
       price: product.price.toStringAsFixed(0));
-  body["bankcode"] = utils.getBankCode();body["description"] = utils.getDescription(body["apptransid"]);
+  body["bank_code"] = utils.getBankCode();body["description"] = utils.getDescription(body["app_trans_id"]);
 
   var dataGetMac = sprintf("%s|%s|%s|%s|%s|%s|%s", [
-    body["appid"],
-    body["apptransid"],
-    body["appuser"],
+    body["app_id"],
+    body["app_trans_id"],
+    body["app_user"],
     body["amount"],
-    body["apptime"],
-    body["embeddata"],
+    body["app_time"],
+    body["embed_data"],
     body["item"]
   ]);
   body["mac"] = utils.getMacCreateOrder(dataGetMac);

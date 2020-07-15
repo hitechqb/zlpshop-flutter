@@ -1,3 +1,3 @@
 class Endpoints {
-  static final String createOrderUrl = "https://sandbox.zalopay.com.vn/v001/tpe/createorder";
+  static final String createOrderUrl = "https://sb-openapi.zalopay.vn/v2/create";
 }

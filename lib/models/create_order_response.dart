@@ -9,10 +9,10 @@ class CreateOrderResponse {
 
   factory CreateOrderResponse.fromJson(Map<String, dynamic> json) {
     return CreateOrderResponse(
-      zptranstoken: json['zptranstoken'] as String,
-      orderurl: json['orderurl'] as String,
-      returncode: json['returncode'] as int,
-      returnmessage: json['returnmessage'] as String,
+      zptranstoken: json['zp_trans_token'] as String,
+      orderurl: json['order_url'] as String,
+      returncode: json['return_code'] as int,
+      returnmessage: json['return_message'] as String,
      );
   }
 }
