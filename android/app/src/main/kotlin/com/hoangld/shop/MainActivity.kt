@@ -1,7 +1,6 @@
 package com.hoangld.shop
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -35,6 +34,7 @@ class MainActivity: FlutterActivity() {
                 if (call.method == "payOrder"){
                     val tagSuccess = "[OnPaymentSucceeded]"
                     val tagError = "[onPaymentError]"
+                    val tagNotInstallError = "[onInstallError]"
                     val token = call.argument<String>("zptoken")
 
                     ZaloPaySDK.getInstance().payOrder(this@MainActivity, token !!, object : ZaloPayListener {
@@ -50,14 +50,15 @@ class MainActivity: FlutterActivity() {
                                 val handler = Handler(Looper.getMainLooper())
                                 handler.postDelayed({
                                     AlertDialog.Builder(this@MainActivity)
-                                            .setTitle("Error")
-                                            .setMessage("Không tìm thấy app ZaloPay")
-                                            .setPositiveButton("Install") { dialog, which ->
+                                            .setTitle("Thông báo")
+                                            .setMessage("Cài đặt app ZaloPay")
+                                            .setPositiveButton("Cải đặt") { dialog, which ->
                                                 ZaloPaySDK.getInstance().navigateToStore(this@MainActivity)
                                                 result.success("Đang xử lý")
                                             }
-                                            .setNegativeButton("Back") { dialog, which ->
-                                                result.success("Chưa cài đặt ZaloPay")
+                                            .setNegativeButton("Hủy") { dialog, which ->
+                                                Log.d(tagNotInstallError, "Người dùng hủy cài đặt ZaloPay")
+                                                result.success("Thanh toán thất bại")
                                             }
                                             .show()
                                 }, 500)
