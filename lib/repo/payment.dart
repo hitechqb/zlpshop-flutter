@@ -1,5 +1,4 @@
 import 'package:shop/models/create_order_response.dart';
-import 'package:shop/models/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -13,16 +12,11 @@ class ZaloPayConfig {
   static const String key1 = "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn";
   static const String key2 = "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf";
 
-  static const String appUser = "zamo app";
+  static const String appUser = "zalopay demo app";
   static int transIdDefault = 1;
-
-  /// use method for get detail value
-//   String getAppId() => appId;
-//   String getKey1() => key1;
-//   String getKey2() => key2;
 }
 
-Future<CreateOrderResponse> createOrder({Product product}) async {
+Future<CreateOrderResponse> createOrder(int price) async {
   var header = new Map<String, String>();
   header["Content-Type"] = "application/x-www-form-urlencoded";
 
@@ -30,13 +24,13 @@ Future<CreateOrderResponse> createOrder({Product product}) async {
   body["app_id"] = ZaloPayConfig.appId;
   body["app_user"] = ZaloPayConfig.appUser;
   body["app_time"] = DateTime.now().millisecondsSinceEpoch.toString();
-  body["amount"] = product.price.toStringAsFixed(0);
+  body["amount"] = price.toStringAsFixed(0);
   body["app_trans_id"] = utils.getAppTransId();
   body["embed_data"] = utils.getEmbedData();
   body["item"] = utils.getItems(
-      id: product.id,
-      name: product.name,
-      price: product.price.toStringAsFixed(0));
+      id: 1,
+      name: "Demo App",
+      price: price.toStringAsFixed(0));
   body["bank_code"] = utils.getBankCode();body["description"] = utils.getDescription(body["app_trans_id"]);
 
   var dataGetMac = sprintf("%s|%s|%s|%s|%s|%s|%s", [
