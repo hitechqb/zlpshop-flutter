@@ -14,7 +14,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(child: Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
         elevation: 0,
@@ -27,6 +27,13 @@ class _DashboardState extends State<Dashboard> {
       body: SafeArea(
         child: Home(widget.title),
       ),
+    ),
+    onTap: () {
+      FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+    },
     );
   }
 }

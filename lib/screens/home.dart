@@ -16,11 +16,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   static const EventChannel eventChannel = EventChannel('flutter.native/eventPayOrder');
   static const MethodChannel platform = const MethodChannel('flutter.native/channelPayOrder');
-  final myController = TextEditingController(text: "10000");
   final textStyle = TextStyle(color: Colors.black54);
   final valueStyle = TextStyle(color: AppColor.accentColor, fontSize: 18.0, fontWeight: FontWeight.w400);
   String zpTransToken = "";
   String payResult = "";
+  String payAmount = "10000";
+  bool showResult = false;
   @override
   void initState() {
     super.initState();
@@ -29,12 +30,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myController.dispose();
-    super.dispose();
-  }
 
   void _onEvent(Object event) {
     print("_onEvent: '$event'.");
@@ -61,21 +56,25 @@ class _HomeState extends State<Home> {
         child: GestureDetector(
           onTap: () async {
             int amount = int.parse(value);
-            if (amount > 1000000) {
-              zpTransToken = "Invalid Amount";
-            }
-            showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Center(child: CircularProgressIndicator(),);
-                  });
-            var result = await createOrder(amount);
-            if (result != null) {
-              Navigator.pop(context);
-              zpTransToken = result.zptranstoken;
+            if (amount < 1000 || amount > 1000000) {
               setState(() {
-                zpTransToken = result.zptranstoken;
+                zpTransToken = "Invalid Amount";
               });
+            }else {
+              showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Center(child: CircularProgressIndicator(),);
+                    });
+              var result = await createOrder(amount);
+              if (result != null) {
+                Navigator.pop(context);
+                zpTransToken = result.zptranstoken;
+                setState(() {
+                  zpTransToken = result.zptranstoken;
+                  showResult = true;
+                });
+              }
             }
           },
           child: Container(
@@ -93,7 +92,9 @@ class _HomeState extends State<Home> {
   /// Build Button Pay
   Widget _btnPay(String zpToken) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-        child: GestureDetector(
+        child: Visibility(
+          visible: showResult,
+          child: GestureDetector(
           onTap: () async {
             String response = "";
             try {
@@ -119,8 +120,9 @@ class _HomeState extends State<Home> {
               ),
               child: Text("Pay",
                   style: TextStyle(color: Colors.white, fontSize: 20.0))),
-        ),
-      );
+        ), )
+
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -134,19 +136,18 @@ class _HomeState extends State<Home> {
             hintText: 'Amount',
             icon: Icon(Icons.attach_money),
           ),
-          controller: myController,
-          keyboardType: TextInputType.number,
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
+          initialValue: payAmount,
+          onChanged: (value) {
+            setState(() {
+              payAmount = value;
+            });
           },
+          keyboardType: TextInputType.number,
         ),
-      _btnCreateOrder(myController.text),
+      _btnCreateOrder(payAmount),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: Text("zptranstoken", style: textStyle,),
+        child: Visibility(child: Text("zptranstoken:", style: textStyle,), visible: showResult,),
       ),
       Container(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -155,7 +156,7 @@ class _HomeState extends State<Home> {
       _btnPay(zpTransToken),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: Text("Trạng thái đơn hàng", style: textStyle,),
+        child: Visibility(child: Text("Transaction status:", style: textStyle), visible: showResult),
       ),
       Container(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -168,7 +169,7 @@ class _HomeState extends State<Home> {
 
 /// Build Info App
 Widget _quickConfig = Container(
-  margin: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+  margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   child: Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,21 +180,7 @@ Widget _quickConfig = Container(
         children: <Widget>[
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text("Thông tin"),
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                "AppID: ",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                "2554",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-              ),
-            ],
+            child: Text("AppID: 2554"),
           ),
         ],
       ),
