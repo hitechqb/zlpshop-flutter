@@ -13,8 +13,8 @@ class AppColor {
 
 /// Text Theme for app
 TextTheme _textTheme = TextTheme(
-    body1: TextStyle(color: AppColor.textPrimaryColor, fontSize: 18.0),
-    title: TextStyle(color: Colors.white),
+    bodyText2: TextStyle(color: AppColor.textPrimaryColor, fontSize: 18.0),
+    headline6: TextStyle(color: Colors.white),
 );
 
 /// Theme Data for App

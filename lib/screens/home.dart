@@ -1,11 +1,13 @@
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/repo/payment.dart';
 import 'package:shop/screens/create_order_response.dart';
 import 'package:shop/utils/util.dart' as utils;
 import 'package:shop/utils/theme_data.dart';
-
+import 'package:shop/models/create_order_response.dart';
 
 class Home extends StatefulWidget {
   final String title;
@@ -22,7 +24,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _listProduct = getListItems();
     selectedItem = _listProduct != null ? _listProduct[0] : null;
@@ -80,8 +81,14 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
         child: GestureDetector(
           onTap: () async {
+            showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(child: CircularProgressIndicator(),);
+                  });
             var result = await createOrder(product: _product);
             if (result != null) {
+              Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -90,7 +97,7 @@ class _HomeState extends State<Home> {
             }
           },
           child: Container(
-               height: 100.0,
+              height: 100.0,
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: AppColor.primaryColor,
@@ -149,7 +156,7 @@ Widget _quickConfig = Container(
                     TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
               ),
               Text(
-                "124705",
+                "2554",
                 style:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
               ),
@@ -157,21 +164,8 @@ Widget _quickConfig = Container(
           ),
         ],
       ),
-      _btnQuickEdit,
+      // _btnQuickEdit,
     ],
-  ),
-);
-
-/// Build Button Quick Edit Info
-Widget _btnQuickEdit = Container(
-  decoration: BoxDecoration(
-      color: AppColor.accentColor.withOpacity(0.8),
-      borderRadius: BorderRadius.circular(25.0)),
-  child: IconButton(
-    icon: Icon(
-      Icons.edit,
-      color: Colors.white,
-    ),
   ),
 );
 

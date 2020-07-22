@@ -20,36 +20,12 @@ class _DashboardState extends State<Dashboard> {
         elevation: 0,
         // backgroundColor: Colors.transparent,
         leading: Center(
-           child: Text(widget.version),
+          child: Text(widget.version),
         ),
-        title: Text(widget.title, style: Theme.of(context).textTheme.title,),
-        actions: <Widget>[
-          Container(
-             margin: const EdgeInsets.only(right: 20.0),
-            child: Icon(Icons.crop_free),
-          )
-        ],
+        title: Text(widget.title, style: Theme.of(context).textTheme.headline6,),
       ),
       body: SafeArea(
         child: Home(widget.title),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        iconSize: 30.0,
-        currentIndex: 0,
-        items: [
-          BottomNavigationBarItem(
-              title: Text("Home"),
-              icon: Icon(Icons.remove_from_queue)
-          ),
-          BottomNavigationBarItem(
-            title: Text("Tạo đơn hàng"),
-            icon: Icon(Icons.create)
-          ),
-          BottomNavigationBarItem(
-              title: Text("Lịch sử"),
-              icon: Icon(Icons.history)
-          ),
-        ],
       ),
     );
   }

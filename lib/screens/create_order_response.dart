@@ -120,26 +120,6 @@ class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
       ),
     );
 
-    /// Build BottomNavigationBar
-    final _bottomNavigationBar = BottomNavigationBar(
-      iconSize: 30.0,
-      currentIndex: 0,
-      items: [
-        BottomNavigationBarItem(
-            title: Text("Get Status"),
-            icon: Icon(Icons.highlight)
-        ),
-        BottomNavigationBarItem(
-            title: Text("Refund"),
-            icon: Icon(Icons.create)
-        ),
-        BottomNavigationBarItem(
-            title: Text("Capture"),
-            icon: Icon(Icons.fullscreen)
-        ),
-      ],
-    );
-
     ///
     final isSuccess = widget.response.returncode == 1;
     final cardDetail = isSuccess
@@ -164,7 +144,6 @@ class _CreateOrderAndPayWidgetState extends State<CreateOrderAndPayWidget> {
               ),
             ),
           )),
-      bottomNavigationBar: _bottomNavigationBar,
     );
   }
 }
